@@ -16,7 +16,7 @@ type ChatSession = {
   createdAt: string;
 };
 
-const API_URL = "https://clone-of-gpt-tmjk.onrender.com";
+const API_URL = "http://localhost:5000";
 const INTRO_MSG =
   "I may be a clone, but I can help you like the real one. Tell me, how can I help you today?";
 
