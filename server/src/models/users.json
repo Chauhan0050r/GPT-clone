@@ -1,0 +1,21 @@
+{
+  "users": [
+    {
+      "email": "iitkhinayush2702@gmail.com",
+      "password": "$2b$10$oqHitXsx/sKRKxAk/GpOJurjhb3Ja82QicKvwJpr19RAcxviBTS9y",
+      "nickname": "protodon"
+    },
+    {
+      "id": "qjQ7DDP27LS4UqMObO37x",
+      "email": "kosaraju1122@hotmail.com",
+      "password": "$2b$10$c/quro1t1FB4tEdi4TdVVeK2QhI5ztdVgiYvmrdjneOZj5VWLnzSO",
+      "nickname": "raju"
+    },
+    {
+      "id": "pGhVqPcymlHqMTgpDMgpu",
+      "email": "kayush21@iitk.ac.in",
+      "password": "$2b$10$1fEaTFkB7GgIIKORFH5ym.kw3s2ckWNyyufHKRrOQJOpvcRCv/.Z.",
+      "nickname": "fighter"
+    }
+  ]
+}
