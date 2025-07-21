@@ -17,7 +17,8 @@ type ChatSession = {
 };
 
 const API_URL = "http://localhost:5000";
-const INTRO_MSG = "I may be a clone, but I can help you like the real one. Tell me, how can I help you today?";
+const INTRO_MSG =
+  "I may be a clone, but I can help you like the real one. Tell me, how can I help you today?";
 
 function App() {
   const [input, setInput] = useState("");
@@ -35,7 +36,6 @@ function App() {
   const chatEndRef = useRef<HTMLDivElement>(null);
   const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  // 🎯 Fetch all user sessions after login
   useEffect(() => {
     if (!token) return;
 
@@ -47,7 +47,6 @@ function App() {
       .catch((err) => console.error("❌ Failed to load sessions", err));
   }, [token]);
 
-  // 🧠 Resume last session OR auto-create first session after login
   useEffect(() => {
     if (!token) return;
 
@@ -63,28 +62,31 @@ function App() {
           setActiveSessionId(session._id);
           localStorage.setItem("lastSessionId", session._id);
 
-          const messages: Message[] = (session.messages || []).map((m: any) => ({
+          const messages = (session.messages || []).map((m: any) => ({
             role: m.role,
             content: m.content,
             timestamp: new Date(m.timestamp).toLocaleTimeString(),
           }));
 
-          setChat(messages.length === 0
-            ? [{
-                role: "assistant",
-                content: INTRO_MSG,
-                timestamp: new Date().toLocaleTimeString(),
-              }]
-            : messages);
+          setChat(
+            messages.length === 0
+              ? [
+                  {
+                    role: "assistant",
+                    content: INTRO_MSG,
+                    timestamp: new Date().toLocaleTimeString(),
+                  },
+                ]
+              : messages
+          );
           return;
         } catch (err) {
-          console.warn("⚠️ Could not resume session. Creating new one...");
+          console.warn("⚠️ Could not resume last session.");
           localStorage.removeItem("lastSessionId");
         }
       }
 
-      // No session found — create new one
-      await handleNewChat(true); // trigger intro but don't push to sessions list again
+      await handleNewChat(true); // create new session on login
     };
 
     resumeOrCreate();
@@ -180,10 +182,34 @@ function App() {
       .filter((msg) => msg.role !== "assistant" || msg.content !== INTRO_MSG)
       .map(({ role, content }) => ({ role, content }));
 
+    // ✅ Rename chat session (if it's the first message)
+    if (chat.length === 0 && userMessage.content.trim().length > 0) {
+      try {
+        await fetch(`${API_URL}/api/sessions/${activeSessionId}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ newName: userMessage.content.slice(0, 50) }),
+        });
+
+        // update frontend session list
+        setSessions((prev) =>
+          prev.map((s) =>
+            s._id === activeSessionId
+              ? { ...s, sessionName: userMessage.content.slice(0, 50) }
+              : s
+          )
+        );
+      } catch (error) {
+        console.error("Error updating session name:", error);
+      }
+    }
+
     await streamChatResponse(conversation);
   };
 
-  // 🆕 Create a brand new session (used by auto-create and "New Chat")
   const handleNewChat = async (suppressAdd?: boolean) => {
     try {
       const res = await fetch(`${API_URL}/api/sessions`, {
@@ -234,6 +260,28 @@ function App() {
     );
   };
 
+  const handleDeleteSession = async (sessionId: string) => {
+    const confirm = window.confirm("🗑️ Are you sure you want to delete this session?");
+    if (!confirm) return;
+
+    try {
+      await fetch(`${API_URL}/api/sessions/${sessionId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setSessions((prev) => prev.filter((s) => s._id !== sessionId));
+
+      if (activeSessionId === sessionId) {
+        setActiveSessionId(null);
+        localStorage.removeItem("lastSessionId");
+        setChat([]);
+      }
+    } catch (err) {
+      console.error("❌ Failed to delete session", err);
+    }
+  };
+
   const handleAuth = (tok: string, nick: string) => {
     setToken(tok);
     setNickname(nick);
@@ -269,8 +317,9 @@ function App() {
         <Sidebar
           sessions={sessions}
           activeSessionId={activeSessionId}
-          onSelectSession={handleSelectSession}
           onNew={() => handleNewChat(false)}
+          onSelectSession={handleSelectSession}
+          onDeleteSession={handleDeleteSession}
           onClose={() => setShowSidebar(false)}
         />
       )}
