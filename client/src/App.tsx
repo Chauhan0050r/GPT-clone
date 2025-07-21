@@ -16,7 +16,7 @@ type ChatSession = {
   createdAt: string;
 };
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://clone-of-gpt-tmjk.onrender.com";
 const INTRO_MSG =
   "I may be a clone, but I can help you like the real one. Tell me, how can I help you today?";
 
@@ -329,7 +329,7 @@ function App() {
           <button onClick={() => setShowSidebar(true)} className="text-white text-xl mr-4">
             ☰
           </button>
-          <span className="gradient-logo">💬 Perplexity Clone</span>
+          <span className="gradient-logo">💬 GPT Clone</span>
           <div className="header-action">
             <span>Hello, {nickname}!</span>
             <button className="text-red-400 underline ml-3 text-sm" onClick={logout}>
