@@ -37,7 +37,7 @@ const Login: React.FC<Props> = ({ onAuth, onToggle }) => {
           }}
         >
           <div className="auth-logo">
-            <span className="gradient-logo" style={{ fontSize: "2rem" }}>💬 Perplexity Chat</span>
+            <span className="gradient-logo" style={{ fontSize: "2rem" }}>💬 Proto Chat</span>
           </div>
           <h2 className="auth-title">Welcome Back</h2>
           <input

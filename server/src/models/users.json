@@ -16,6 +16,30 @@
       "email": "kayush21@iitk.ac.in",
       "password": "$2b$10$1fEaTFkB7GgIIKORFH5ym.kw3s2ckWNyyufHKRrOQJOpvcRCv/.Z.",
       "nickname": "fighter"
+    },
+    {
+      "id": "-01XzdRLuvm9J-6J26rms",
+      "email": "ayush21@iitk.ac.in",
+      "password": "$2b$10$86CCmDts4FidW/SIIvbKlOSIpcMkHcqtatk8P/GEYQBAyhzbewUDG",
+      "nickname": "protodon"
+    },
+    {
+      "id": "jpHE6IHRX3N-b4frIdIPn",
+      "email": "sanjukr2401@gmail.com",
+      "password": "$2b$10$pTApybTBV8UVWYSRQWV9X.3j5dyQ4jdNrVo6tzAWm/HMW1KMUvoqC",
+      "nickname": "prototester"
+    },
+    {
+      "id": "7iySgmCLXdbtsrfZe8N9N",
+      "email": "abhinavm21@iitk.ac.in",
+      "password": "$2b$10$Xr03YprX6szE4izQTRyGs.es4LSZ03rP6d4z.QkRLIad8jxpDx9FS",
+      "nickname": "abhi"
+    },
+    {
+      "id": "Ub5EqDGfn_FSBL9ThPjcy",
+      "email": "ujjwal21@iitk.ac.in",
+      "password": "$2b$10$8sWJHO6CBEwEG2n4s8u0je3wMDDeK7iBf2nw9f3c0UfqfJ7IxNNky",
+      "nickname": "ujju"
     }
   ]
 }

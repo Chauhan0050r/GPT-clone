@@ -23,7 +23,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onDone }) => {
             <text x="50%" y="54%" textAnchor="middle" fontSize="28" fontWeight="700" fill="#fff" dy=".3em">💬</text>
           </svg>
         </div>
-        <div className="splash-title">Perplexity Chat</div>
+        <div className="splash-title">Proto Chat</div>
       </div>
     </div>
   );
