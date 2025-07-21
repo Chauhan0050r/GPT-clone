@@ -1,0 +1,73 @@
+// backend/routes/sessions.ts
+
+import { Router, Request, Response } from "express";
+import { ChatSessionModel } from "../models/ChatSession";
+import { getUserIdFromToken } from "../utils/auth";
+
+const router = Router();
+
+/**
+ * ✅ Get all sessions for the authenticated user
+ */
+router.get("/", async (req: Request, res: Response) => {
+  const userId = getUserIdFromToken(req.headers.authorization);
+  if (!userId) return res.status(401).json({ error: "Unauthorized" });
+
+  try {
+    const sessions = await ChatSessionModel.find({ userId })
+      .sort({ createdAt: -1 })
+      .select("_id sessionName createdAt"); // Send lightweight list
+
+    res.json(sessions);
+  } catch (err) {
+    console.error("Error fetching sessions:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+/**
+ * ✅ Create a new chat session
+ */
+router.post("/", async (req: Request, res: Response) => {
+  const userId = getUserIdFromToken(req.headers.authorization);
+  if (!userId) return res.status(401).json({ error: "Unauthorized" });
+
+  try {
+    const session = await new ChatSessionModel({
+      userId,
+      sessionName: req.body.sessionName || "New Chat",
+      messages: [],
+    }).save();
+
+    res.json(session);
+  } catch (err) {
+    console.error("Error creating session:", err);
+    res.status(500).json({ error: "Failed to create session" });
+  }
+});
+
+/**
+ * ✅ Get a specific session by sessionId (only if owned by user)
+ */
+router.get("/:sessionId", async (req: Request, res: Response) => {
+  const userId = getUserIdFromToken(req.headers.authorization);
+  if (!userId) return res.status(401).json({ error: "Unauthorized" });
+
+  try {
+    const session = await ChatSessionModel.findOne({
+      _id: req.params.sessionId,
+      userId,
+    });
+
+    if (!session) {
+      return res.status(404).json({ error: "Session not found" });
+    }
+
+    res.json(session);
+  } catch (err) {
+    console.error("Error fetching session:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+export default router;

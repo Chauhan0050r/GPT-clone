@@ -1,0 +1,14 @@
+{
+  "sessions": [
+    {
+      "id": "uuid1",
+      "userEmail": "abc@example.com",
+      "title": "New Chat",
+      "createdAt": "2025-07-20T19:00:00.000Z",
+      "messages": [
+        { "role": "user", "content": "...", "timestamp": "..." },
+        { "role": "assistant", "content": "...", "timestamp": "..." }
+      ]
+    }
+  ]
+}
