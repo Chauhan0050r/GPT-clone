@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import SplashScreen from "./SplashScreen";
 
 type Props = { onAuth: (token: string, nickname: string) => void; onToggle: () => void };
